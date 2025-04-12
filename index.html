@@ -20,10 +20,17 @@
       transform: translate(-50%, -50%);
       font-size: 2em;
       z-index: 999;
+      animation: spamText 0.1s infinite;
+    }
+    @keyframes spamText {
+      0% { transform: translate(-50%, -50%) rotate(0deg); }
+      50% { transform: translate(-50%, -50%) rotate(360deg); }
+      100% { transform: translate(-50%, -50%) rotate(0deg); }
     }
     .bsod {
       position: fixed;
-      top: 0; left: 0;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       background: blue;
@@ -34,26 +41,20 @@
       z-index: 9999;
       padding: 20px;
     }
-    .spamText {
+    .message {
       position: absolute;
       top: 10%;
       left: 10%;
       font-size: 3em;
       color: white;
-      animation: spamTextAnimation 0.1s infinite;
-      z-index: 99999;
-    }
-    @keyframes spamTextAnimation {
-      0% { transform: translate(-50%, -50%) rotate(0deg); }
-      50% { transform: translate(-50%, -50%) rotate(360deg); }
-      100% { transform: translate(-50%, -50%) rotate(0deg); }
+      z-index: 10000;
     }
   </style>
 </head>
 <body>
 
   <div id="virusText">MENYUSUP KE SISTEM...</div>
-  <div class="spamText">MAMPUS LU ANJING!</div>
+  <div class="message">MAMPUS LU ANJING!</div>
   <div class="bsod" id="bsod">
     <p><b>SYSTEM FAILURE</b><br>
     Windows has encountered a critical error and will shut down.<br><br>
@@ -62,20 +63,25 @@
     <i>JANGAN PERNAH HINA ORANG TUA</i></p>
   </div>
 
-  <!-- AUDIO SPAM - 100 Horror Sounds -->
-  <audio id="scream1" loop autoplay><source src="https://www.myinstants.com/media/sounds/scream.mp3" type="audio/mp3"></audio>
-  <audio id="scream2" loop autoplay><source src="https://www.myinstants.com/media/sounds/movie_1.mp3" type="audio/mp3"></audio>
-  <audio id="scream3" loop autoplay><source src="https://www.myinstants.com/media/sounds/run.mp3" type="audio/mp3"></audio>
-  <audio id="scream4" loop autoplay><source src="https://www.myinstants.com/media/sounds/scary-sound-2.mp3" type="audio/mp3"></audio>
-  <audio id="scream5" loop autoplay><source src="https://www.myinstants.com/media/sounds/ghost-scream.mp3" type="audio/mp3"></audio>
-  <audio id="scream6" loop autoplay><source src="https://www.myinstants.com/media/sounds/creepy-laugh.mp3" type="audio/mp3"></audio>
-  <audio id="scream7" loop autoplay><source src="https://www.myinstants.com/media/sounds/dark-whispers.mp3" type="audio/mp3"></audio>
-  <audio id="scream8" loop autoplay><source src="https://www.myinstants.com/media/sounds/creepy-music.mp3" type="audio/mp3"></audio>
-  <audio id="scream9" loop autoplay><source src="https://www.myinstants.com/media/sounds/super-creepy.mp3" type="audio/mp3"></audio>
-  <audio id="scream10" loop autoplay><source src="https://www.myinstants.com/media/sounds/haunted-houses.mp3" type="audio/mp3"></audio>
-  <!-- Duplicate or add new audio for a total of 100 -->
-  
+  <!-- Audio Controls for User Interaction -->
+  <button id="playAudioBtn" style="position: absolute; top: 10px; left: 10px; padding: 10px; font-size: 16px;">Play Horror Sounds</button>
+
   <script>
+    // Prepare Audio Files
+    const audioFiles = [];
+    for (let i = 0; i < 100; i++) {
+      const audio = new Audio(`https://www.myinstants.com/media/sounds/creepy-sound-${i+1}.mp3`);
+      audio.loop = true;
+      audio.volume = 0.5; // Adjust volume for better experience
+      audioFiles.push(audio);
+    }
+
+    // Play Audio on Button Click
+    document.getElementById("playAudioBtn").addEventListener("click", function () {
+      audioFiles.forEach(audio => audio.play());
+      this.style.display = "none"; // Hide the button after clicking
+    });
+
     // Fullscreen & Lock
     document.body.requestFullscreen?.();
     document.addEventListener("contextmenu", e => e.preventDefault());
@@ -148,33 +154,6 @@
     window.onbeforeunload = function () {
       return "SISTEM MASIH AKTIF!";
     };
-
-    // Audio Spam Speed & Volume Control (For Horror Music Layer)
-    let audioFiles = [];
-    for (let i = 0; i < 100; i++) {
-      let audio = new Audio(`https://www.myinstants.com/media/sounds/creepy-sound-${i+1}.mp3`);
-      audio.loop = true;
-      audio.volume = Math.random();
-      audio.play();
-      audioFiles.push(audio);
-    }
-
-    // Random Text Scrolling on Screen
-    setInterval(() => {
-      let spamText = document.createElement("div");
-      spamText.innerText = "MAMPUS LU ANJING!";
-      spamText.style.position = "absolute";
-      spamText.style.fontSize = `${Math.random() * 3 + 2}em`;
-      spamText.style.color = `rgb(${Math.random() * 255},${Math.random() * 255},${Math.random() * 255})`;
-      spamText.style.left = `${Math.random() * 100}%`;
-      spamText.style.top = `${Math.random() * 100}%`;
-      spamText.style.transform = `rotate(${Math.random() * 360}deg)`;
-      document.body.appendChild(spamText);
-      setTimeout(() => {
-        spamText.remove();
-      }, 2000);
-    }, 500);
-
   </script>
 
 </body>
